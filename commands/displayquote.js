@@ -13,14 +13,11 @@ module.exports =
     callback: async (message,arguments) => {
         await mongo().then(async (mongoose) => {
             try{
-                var valArg = true;
                 const name = await quoteSchema.distinct("quoteOf");
                 embed = new Discord.MessageEmbed()
                 .setTitle("Quote List");
-                
                 if(arguments[0] == "all")
                 {
-                    valArg = false;
                     if(name.length>5)
                     {
                         var jArray = [];
@@ -48,19 +45,13 @@ module.exports =
                         })
                         embed = page(jArray,message);
                 }
-                   /* embed.setTitle(commandQuote);
-                 var Cursor = await quoteSchema.find({quoteOf:{$eq:arguments[0]}},function (err,res){if (err) console.log(err); return res;}).clone().catch(function(err){ console.log(err)});
-                    Cursor.forEach(function(doc){if (doc){embed.addField(doc.content,relativeDate(doc.createdAt,new Date()))}});
-                }*/
                 if (arguments[0] == null)
                 {
                     misArg = true;
                     message.channel.send("Missing arugments");
                 }
             }
-            finally{
-                
-            }
+            finally{}
         })
     }
 }
