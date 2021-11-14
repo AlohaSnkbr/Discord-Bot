@@ -20,36 +20,46 @@ module.exports =
                 
                 if(arguments[0] == "all")
                 {
+                    valArg = false;
                     if(name.length>5)
                     {
                         var jArray = [];
                         for (let i = 0; i < name.length;i++){
                             var json = {
                                 name:name[i],
-                                count: await quoteSchema.countDocuments({quoteOf:{$eq:name[i]}})
+                                count: "Quotes: " + await quoteSchema.countDocuments({quoteOf:{$eq:name[i]}})
                             }
                             jArray[i] = json;
                         }
-                        page(jArray,message);
+                        embed = page(jArray,message);
                     }
                 }
-                var fnd = await quoteSchema.findOne({quoteOf:{$eq:arguments[0]}});
-                var commandQuote;
-                if (fnd) {commandQuote = fnd.quoteOf;}
-                if (arguments[0] == commandQuote)
+                var authorQcount = await quoteSchema.countDocuments({quoteOf:{$eq:arguments[0]}}).catch((e)=>{console.log(e);});
+                if (authorQcount > 0)
                 {
-                    embed.setTitle(commandQuote);
-                    var Cursor = await quoteSchema.find({quoteOf:{$eq:arguments[0]}},function (err,res){if (err) console.log(err); return res;}).clone().catch(function(err){ console.log(err)});
-                    Cursor.forEach(function(doc){if (doc){embed.addField(doc.content,relativeDate(doc.createdAt,new Date()))}});
+                        var jArray = [];
+                        var Cursor = await quoteSchema.find({quoteOf:{$eq:arguments[0]}});
+                        Cursor.forEach(function(doc){
+                            var json = {
+                                data:doc.content,
+                                value: relativeDate(doc.createdAt,new Date()),
+                            }
+                            jArray.push(json);
+                        })
+                        embed = page(jArray,message);
                 }
+                   /* embed.setTitle(commandQuote);
+                 var Cursor = await quoteSchema.find({quoteOf:{$eq:arguments[0]}},function (err,res){if (err) console.log(err); return res;}).clone().catch(function(err){ console.log(err)});
+                    Cursor.forEach(function(doc){if (doc){embed.addField(doc.content,relativeDate(doc.createdAt,new Date()))}});
+                }*/
                 if (arguments[0] == null)
                 {
-                    valArg = false;
+                    misArg = true;
                     message.channel.send("Missing arugments");
                 }
             }
             finally{
-                if(valArg){message.channel.send(embed);}
+                
             }
         })
     }

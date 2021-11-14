@@ -9,9 +9,9 @@ module.exports = async(list,message) =>
         var embed = new Discord.MessageEmbed();
         for(let j=i*5; j<(i*5)+5&&j<list.length;j++)
         {
-            embed.addField(list[j].name,list[j].count);
+            embed.addField(list[j].data,list[j].value);
         }
-        pages[i] = embed;
+        pages[i] = embed.setTitle("Quote List");
     }
     pagination(message,pages);
 } 
