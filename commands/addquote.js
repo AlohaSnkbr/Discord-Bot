@@ -24,7 +24,7 @@ module.exports =
                 message.reply('Your quote was added to the database')
             }
             finally{
-                mongoose.connection.close()
+                mongoose.connection.close();
             }
         })
         .catch((e)=>{

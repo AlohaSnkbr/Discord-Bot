@@ -8,14 +8,15 @@ const mongo = require('./mongo')
 
 client.on('ready',async ()=> {
     console.log('The client is ready!')
+
     await mongo().then((mongoose) => {
         try{
             console.log('Connect to mongo!')
         }
         finally{
-            mongoose.connection.close()
+            mongoose.disconnect();
         }
-    })
+    }).catch((e) => {console.log(e);});
     const baseFile = 'command-base.js'
     const commandBase = require(`./commands/${baseFile}`)
     const readCommands = dir => {
@@ -32,7 +33,5 @@ client.on('ready',async ()=> {
     }
     readCommands('commands');
 })
-
-
 
 client.login(config.token);
