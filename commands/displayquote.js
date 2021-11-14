@@ -17,24 +17,21 @@ module.exports =
                .setTitle("Quote List");
                if(arguments[0] == "all")
                 {
-                for(let i=0;i< name.length;i++){ 
-                embed.addField(name[i],await quoteSchema.countDocuments({quoteOf:{$eq:name[i]}},function(err,count){if (err) console.log(err); return count;}),false)
+                    for(let i=0;i< name.length;i++)
+                    { 
+                        embed.addField(name[i],await quoteSchema.countDocuments({quoteOf:{$eq:name[i]}},function(err,count){if (err) console.log(err); return count;}),false)
                     }
                 }
-                const fnd = await quoteSchema.findOne({quoteOf:{$eq:arguments[1]}}).exec();
-                console.log(fnd);
                 
-                if (arguments[0] == "")
+                var fnd = await quoteSchema.findOne({quoteOf:{$eq:arguments[0]}});
+                var commandQuote;
+                if (fnd) {commandQuote = fnd.quoteOf;}
+                
+                if (arguments[0] == commandQuote)
                 {
-                    console.log("name found");
-                    await quoteSchema.find({quoteOf:{$eq:arguments[1]}},function (err,res)
-                    {if (err) console.log(err);
-                        embed.setTitle(arguments[1]);
-                        for (n in res)
-                        {
-                            embed.addField({value: n});
-                        }
-                    })
+                    embed.setTitle(commandQuote);
+                    var Cursor = await quoteSchema.find({quoteOf:{$eq:arguments[0]}},function (err,res){if (err) console.log(err); return res;});
+                    Cursor.forEach(function(doc){if (doc){embed.addField(doc.content,doc.createdAt)}});
                 }
                 else if (arguments[0] == "")
                 {
