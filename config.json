@@ -1,5 +1,6 @@
 {
-    "token":"NTYwOTkzMTc0MTkwMDMwODQ5.XJ1vmw.6wPkKkc8ELWBknnkOUX5Y--FhMA",
+    "token": YOUR_TOKEN,
     "prefix": "#",
     "mongoPath": "mongodb://localhost:27017/quotebot"
-}
+} 
+
