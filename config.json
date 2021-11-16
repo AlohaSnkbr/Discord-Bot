@@ -1,6 +1,0 @@
-{
-    "token": YOUR_TOKEN,
-    "prefix": "#",
-    "mongoPath": "mongodb://localhost:27017/quotebot"
-} 
-
